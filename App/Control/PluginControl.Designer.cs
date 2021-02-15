@@ -30,6 +30,8 @@ namespace MognetPlugin.Control
         private Button btnClearLog;
         private GroupBox grpAttributes;
         private CheckedListBox chlAttributes;
+        private Label lblmaxplayers;
+        private TextBox txtmaxplayers;
         private Label lblToken;
         private TextBox txtToken;
         private ComboBox cmbSort;
@@ -65,6 +67,8 @@ namespace MognetPlugin.Control
             this.lblSort = new System.Windows.Forms.Label();
             this.cmbSort = new System.Windows.Forms.ComboBox();
             this.chlAttributes = new System.Windows.Forms.CheckedListBox();
+            this.lblmaxplayers = new System.Windows.Forms.Label();
+            this.txtmaxplayers = new System.Windows.Forms.TextBox();
             this.grpOptions.SuspendLayout();
             this.grpHttpLog.SuspendLayout();
             this.grpAttributes.SuspendLayout();
@@ -200,6 +204,8 @@ namespace MognetPlugin.Control
             this.grpAttributes.Controls.Add(this.lblSort);
             this.grpAttributes.Controls.Add(this.cmbSort);
             this.grpAttributes.Controls.Add(this.chlAttributes);
+            this.grpAttributes.Controls.Add(this.lblmaxplayers);
+            this.grpAttributes.Controls.Add(this.txtmaxplayers);
             this.grpAttributes.Location = new System.Drawing.Point(445, 3);
             this.grpAttributes.Name = "grpAttributes";
             this.grpAttributes.Size = new System.Drawing.Size(178, 378);
@@ -284,6 +290,24 @@ namespace MognetPlugin.Control
             this.chlAttributes.Size = new System.Drawing.Size(164, 214);
             this.chlAttributes.TabIndex = 1;
             // 
+            // lblmaxplayers
+            // 
+            this.lblmaxplayers.Location = new System.Drawing.Point(3, 335);
+            this.lblmaxplayers.Name = "lblmaxplayers";
+            this.lblmaxplayers.Size = new System.Drawing.Size(70, 23);
+            this.lblmaxplayers.TabIndex = 12;
+            this.lblmaxplayers.Text = "Max Players:";
+            this.lblmaxplayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtmaxplayers
+            // 
+            this.txtmaxplayers.Location = new System.Drawing.Point(79, 335);
+            this.txtmaxplayers.MaxLength = 30;
+            this.txtmaxplayers.Name = "txtmaxplayers";
+            this.txtmaxplayers.Size = new System.Drawing.Size(91, 20);
+            this.txtmaxplayers.TabIndex = 10;
+            this.txtmaxplayers.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // PluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,6 +374,7 @@ namespace MognetPlugin.Control
             this.btnClearLog.Click += this.btnClearLog_Click;
             this.chlAttributes.ItemCheck += this.chlAttributes_ItemCheck;
             this.cmbSort.SelectedIndexChanged += this.cmbSort_SelectedIndexChanged;
+            this.txtmaxplayers.TextChanged += this.max_players;
             this.Load += this.PluginControl_Load;
         }
 

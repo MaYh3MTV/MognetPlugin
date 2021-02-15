@@ -296,6 +296,21 @@ namespace MognetPlugin.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public string MaxPlayers
+        {
+            get
+            {
+                return ((string)(this["MaxPlayers"]));
+            }
+            set
+            {
+                this["MaxPlayers"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool TimeEnabled
         {

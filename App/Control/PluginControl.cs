@@ -49,6 +49,7 @@ namespace MognetPlugin.Control
             this.chlAttributes.SetItemChecked(13, PluginSettings.GetSetting<bool>("CritHealPerc"));
 
             this.cmbSort.Text = PluginSettings.GetSetting<string>("SortBy");
+            this.txtmaxplayers.Text = PluginSettings.GetSetting<string>("MaxPlayers");
 
             this.chkTimeEnabled.Checked = PluginSettings.GetSetting<bool>("TimeEnabled");
             this.dtpStartTime.Value = DateTime.Parse(PluginSettings.GetSetting<string>("StartTime"));
@@ -161,6 +162,27 @@ namespace MognetPlugin.Control
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
         {
             PluginSettings.SetSetting("SortBy", cmbSort.Text);
+        }
+
+        private void max_players(object sender, EventArgs e)
+        {
+            int Max;
+            try
+            {
+                Max = Int32.Parse(txtmaxplayers.Text);
+
+                if (Max <= 0) 
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ee)
+            {
+                Max = 8;
+                txtmaxplayers.Text = "8";
+            }
+
+            PluginSettings.SetSetting("MaxPlayers", Max.ToString());
         }
 
         private void btnClearLog_Click(object sender, EventArgs e)

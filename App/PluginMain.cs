@@ -5,6 +5,7 @@ using MognetPlugin.Properties;
 using MognetPlugin.Service;
 using MognetPlugin.Util;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MognetPlugin
@@ -60,34 +61,40 @@ namespace MognetPlugin
             {
                 try
                 {
-                    Log Log = PluginUtil.ACTEncounterToModel(encounterInfo.encounter);
-                    if (Log != null)
+                    //PluginControl.LogInfo(PluginSettings.GetSetting<string>("MaxPlayers"));
+                    //Log Log = PluginUtil.ACTEncounterToModel(encounterInfo.encounter);
+                    List<Log> LogList = PluginUtil.ACTEncounterToModelList(encounterInfo.encounter);
+                    LogList.ForEach(Log => 
                     {
+                        //PluginControl.LogInfo(PluginSettings.GetSetting<string>("MaxPlayers"));
+                        if (Log != null)
+                            {
+                                if (PluginSettings.GetSetting<bool>("TimeEnabled") == true && PluginUtil.TimeBetween(DateTime.Now, DateTime.Parse(PluginSettings.GetSetting<string>("StartTime")).TimeOfDay, DateTime.Parse(PluginSettings.GetSetting<string>("EndTime")).TimeOfDay) == false)
+                                {
+                                    PluginControl.LogInfo("Parse *not* sent to your Discord channel due to time lock rules.");
+                                    PluginControl.LogInfo("Waiting for the next encounter...");
+                                    return;
+                                }
 
-                        if (PluginSettings.GetSetting<bool>("TimeEnabled") == true && PluginUtil.TimeBetween(DateTime.Now, DateTime.Parse(PluginSettings.GetSetting<string>("StartTime")).TimeOfDay, DateTime.Parse(PluginSettings.GetSetting<string>("EndTime")).TimeOfDay) == false)
-                        {
-                            PluginControl.LogInfo("Parse *not* sent to your Discord channel due to time lock rules.");
-                            PluginControl.LogInfo("Waiting for the next encounter...");
-                            return;
-                        }
+                                string Json = PluginUtil.ToJson(Log);                               
+                                bool Sent = Service.PostDiscord(Json, PluginSettings.GetSetting<string>("Token"));
+                                if (Sent)
+                                {
+                                    PluginControl.LogInfo("Parse sent to your Discord channel.");
+                                    PluginControl.LogInfo("Waiting for the next encounter...");
+                                }
+                                else
+                                {
+                                    PluginControl.LogInfo("Could not send the parse to your Discord channel. Check your token and permissions.");
+                                }
 
-                        string Json = PluginUtil.ToJson(Log);
-                        bool Sent = Service.PostDiscord(Json, PluginSettings.GetSetting<string>("Token"));
-
-                        if (Sent)
-                        {
-                            PluginControl.LogInfo("Parse sent to your Discord channel.");
-                            PluginControl.LogInfo("Waiting for the next encounter...");
-                        }
-                        else
-                        {
-                            PluginControl.LogInfo("Could not send the parse to your Discord channel. Check your token and permissions.");
-                        }
-                    }
-                    else
-                    {
-                        PluginControl.LogInfo("Nothing to be sent. Waiting for the next encounter...");
-                    }
+                                //PluginControl.LogInfo(Json);
+                            }
+                            else
+                            {
+                                PluginControl.LogInfo("Nothing to be sent. Waiting for the next encounter...");
+                            }
+                    });
                 }
                 catch (Exception e)
                 {
